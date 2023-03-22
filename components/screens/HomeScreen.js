@@ -10,20 +10,10 @@ import Header from '../Header';
 
 // main
 
-
-
 const HomeScreen = ({navigation}) => {
     const genshinAPI = "https://api.genshin.dev/characters/"
     const [characters, setChar] = useState([]);
     const [icon, setIcon] = useState([]);
-
-    const addIcon = () => {
-        const updatedIcon = [...icon];
-        characters.forEach((item) => {
-            updatedIcon.push(genshinAPI + item +"/icon-big.png");
-        });
-        setIcon(updatedIcon);
-    }
 
     useEffect(() => {
         axios.get(genshinAPI)
@@ -33,8 +23,6 @@ const HomeScreen = ({navigation}) => {
         .catch(error => {
             console.log(error);
         });
-        addIcon();
-        console.log(icon);
     }, []);
 
     const numColumns = 3;
@@ -47,10 +35,13 @@ const HomeScreen = ({navigation}) => {
 
                 <View style={styles.characterContainer}> 
                     <FlatList
-                        data={icon}
+                        data={characters}
                         keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => <View>
-                            <Image source={{uri: item}} style={{width: 88, height:84}}/></View>}
+                        renderItem={({ item }) => 
+                            <View>
+                                <Image source={{uri: genshinAPI + item +"/icon-big.webp"}} style={{width: 88, height:84}}/>
+                                <Text>{item}</Text>
+                            </View>}
                         numColumns={numColumns}
                     />
                 </View>
