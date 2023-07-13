@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, KeyboardAvoidingView, 
-         FlatList, View,Image, Platform } from 'react-native';
+         FlatList, View,Image, Pressable, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios  from 'axios';
 
@@ -13,7 +13,6 @@ import Header from '../Header';
 const HomeScreen = ({navigation}) => {
     const genshinAPI = "https://api.genshin.dev/characters/"
     const [characters, setChar] = useState([]);
-    const [icon, setIcon] = useState([]);
 
     useEffect(() => {
         axios.get(genshinAPI)
@@ -27,21 +26,32 @@ const HomeScreen = ({navigation}) => {
 
     const numColumns = 3;
     return (  
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+                              style={styles.container}
+        >
             <LinearGradient colors={['#2D8CD0', '#2D82D0' ,'#2DA9D0']} style={{flex:1}}>
-                <View style={{width:"100%", marginBottom: 96}}>
+                <Pressable style={{width:"100%", marginBottom: 96}} 
+                           onPress={() => navigation.navigate("AboutPage")}
+                >
                     <Header headerTitle="Teyvat-Codex" whichPage="HomePage"/>
-                </View>
+                </Pressable>
 
                 <View style={styles.characterContainer}> 
                     <FlatList
                         data={characters}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => 
-                            <View>
-                                <Image source={{uri: genshinAPI + item +"/icon-big.webp"}} style={{width: 88, height:84}}/>
-                                <Text>{item}</Text>
-                            </View>}
+                            <Pressable style={styles.charCards}
+                                       onPress={()=> navigation.navigate("DetailPage",{
+                                                                          genshinAPI: genshinAPI,
+                                                                          character: item,
+                                       })}
+                            >
+                                <Image source={{uri: genshinAPI + item +"/icon-big.webp"}} 
+                                       style={{resizeMode:"contain", width: 88, height:84}}
+                                />
+                                <Text style={styles.charName}>{item}</Text>
+                            </Pressable>}
                         numColumns={numColumns}
                     />
                 </View>
@@ -69,12 +79,33 @@ const styles = StyleSheet.create({
         marginLeft: 13,
         marginRight: 13,
         marginBottom: 34,
-        paddingTop : 17,
         paddingLeft: 15,
-        paddingRight : 15,
         paddingBottom: 17,
 
         backgroundColor: "#FFFDF2",
+    },
+    charCards: {
+        flex: 1, 
+        alignItems: "center", 
+        justifyContent: "space-between", 
+        marginTop: 17, 
+        marginRight: 15,
+        borderRadius: 10,
+
+        backgroundColor: "#FFD028",
+        borderColor: "#CEB62E",
+    },
+    charName :{
+        flex: 1,
+        backgroundColor: "#FFFBE8",
+        borderColor: "#CEB62E",
+
+        borderRadius: 1,
+        
+        width: "100%",
+        height: 25,
+        paddingTop: 5,
+        paddingBottom: 5,
     },
     searchContainer: {
         width: '100%',

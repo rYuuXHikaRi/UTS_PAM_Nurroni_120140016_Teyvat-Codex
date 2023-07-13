@@ -3,8 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
-    Pressable,
     SafeAreaView
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -17,7 +15,9 @@ import SafeViewAndroid from "./SafeViewAndroid";
 class Header extends Component {
     render() {
         return (
-            <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, {backgroundColor: this.props.whichPage === "AboutDev" ? "#FFF9CF" : "#FFFDF2",}]}>
+            <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, {
+                                  backgroundColor: this.props.whichPage === "AboutDev" ? "#FFF9CF" : "#FFFDF2",}]
+            }>
                 {this.props.whichPage === "HomePage" ? (
                     <View style={styles.container}>
                         <View style={styles.dummyItem}></View>

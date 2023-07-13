@@ -1,18 +1,31 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
+import { StyleSheet, Pressable, Text, SafeAreaView, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRoute } from '@react-navigation/native';
+import axios  from 'axios';
+
 
 // local
-import SafeViewAndroid from '../SafeViewAndroid';
+import Header from '../Header';
+
 
 // main
 const CharacterInfo = ({navigation}) => {
+  const route = useRoute();
+  const genshinAPI = route.params.genshinAPI;
+  const character = route.params.character;
+
+  console.log(genshinAPI);
+  console.log(character);
+
     return (
-        <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
-            <View style={styles.container}>
-                <Text>CharacterInfo</Text>
-            </View>
-        </SafeAreaView>
+        <LinearGradient colors={['#2D8CD0', '#2D82D0' ,'#2DA9D0']} style={{flex:1}}>
+            <Pressable style={{width:"100%", marginBottom: 96}}
+                  onPress={() => navigation.goBack()}
+            >
+                <Header headerTitle="Teyvat-Codex" whichPage="DetailPage"/>
+            </Pressable>
+        </LinearGradient>
     )
 
 };
